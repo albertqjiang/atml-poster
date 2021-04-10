@@ -46,6 +46,7 @@
 \definecolor{camblue}{rgb}{0.639,0.757,0.678}
 
 \usecaptiontemplate{\small\structure{\insertcaptionname~\insertcaptionnumber: }\insertcaption} % A fix for figure numbering
+\setbeamertemplate{caption}[numbered]
 
 \newcommand{\shrink}{-15pt}
 
@@ -110,7 +111,7 @@
     
     \vspace{-0.6in} 
     \begin{block}{Recurrent Graph Neural Networks}
-    Use recurrence to model propagation
+    Node aggregation can be modelled by recurrence.
     
       \begin{figure}
         \centering
@@ -154,13 +155,13 @@
     
     \textcolor{darkred}{Message Passing}\quad For an edge $u \to v$ of type $A$, let $\mathbf{h}_u^t$, $\mathbf{h}_v^t$ be the latent representations for $u$ and $v$ at the $t$-th step, and $\mathbf{A}, \mathbf{b}_A$ be the trainable edge type weight and bias associated with $A$. The message to pass from $u$ to $v$ is
     \begin{equation}
-        \mathbf{m}_{uv}^t = \mathbf{A} \mathbf{h}_u^{t-1} + \mathbf{b}_A.
+        \mathbf{m}_{uv}^t = \mathbf{A} \mathbf{h}_u^{t-1}.
     \end{equation}
     
     \textcolor{darkred}{Propagation}\quad At each iteration, each node representation is updated by combining messages from its neighbours and the latent representation from the last iteration:
     \begin{equation}
         \forall v \in \mathcal{V}. \quad \mathbf{h}_v^t = \textsc{GRU}\left(\mathbf{h}_v^{t-1}, 
-         + add(\{\mathbf{m}_{uv}^t \mid (u, v) \in \mathcal{E} \})\right).
+         \mathbf{b} + add(\{\mathbf{m}_{uv}^t \mid (u, v) \in \mathcal{E} \})\right).
     \end{equation}
     \end{block}
     
@@ -179,6 +180,7 @@
     % \vspace{\shrink}
     % \vspace{0.1in}
     
+    \color{oxfordblue}
     \textcolor{darkred}{Output Modules} After $T$ iterations, the final latent representations for all the nodes are
     \begin{equation}
         \forall v \in \mathcal{V}.\quad \mathbf{s}_v = \mathbf{h}_v^T.
@@ -186,6 +188,7 @@
     
     An output module is used to obtain the appropriate output for each task. Two types of tasks are considered.
     \begin{itemize}
+    \color{oxfordblue}
         \item Node selection. A differentiable scoring function $f_s$ and a softmax function are used to obtain a categorical distribution on nodes:
         \begin{equation}
             \mathbf{p}_{node} = \mathsf{softmax}\left(f_s([\mathbf{s}_{v_1}, \mathbf{s}_{v_2}, \ldots, \mathbf{s}_{v_{\mid \mathcal{V}\mid}}]^T)\right).
@@ -205,22 +208,39 @@
         \end{equation}
     \end{itemize}
     
-    For a fixed number of recurrent unrolling steps, \textbf{GGNN is entirely differentiable.} This was not the case for previous GNNs based on contraction maps. 
-    
-    Calculate gradients by back-propagation and back-propagation through time $\implies$ great boost to optimisation.
+    For a fixed number of recurrent unrolling steps, \textbf{GGNN is entirely differentiable. Gradients can be calculated by back propagation and back propagation through time.} $\implies$ a boost to optimisation. This was not the case for previous GNNs relying on contraction maps.
     
     
+    \begin{block}{Gated Graph Sequence Neural Networks}
+    GGNNs can take graphs as inputs and have a single output. To work with sequential outputs, a GGSNN is needed. Here, we explain the mechanism of a GGSNN with shared output and propagation modules producing an output sequence of length $L$.\vspace{0.2in}
     
+    A schematic of the GGSNN architecture is shown in Figure \ref{fig:GGSNN}.
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{imgs/ggsnn.png}
+        \caption{Diagram of the GGSNN mechanism. This is a duplicate of Figure 2 in \cite{DBLP:journals/corr/LiTBZ15}.}
+        \label{fig:GGSNN}
+    \end{figure}
+    At each \textbf{Init} step, $\boldsymbol{\mathcal{X}}^{(l)}$ is padded with 0: $\boldsymbol{\mathcal{H}}^{(l, 1)} = [\boldsymbol{\mathcal{X}}^{(l)}, \boldsymbol{0}]$.
+    Because we use a shared propagation model, we have $\mathcal{F}_{}^{(l)}$ and $\mathcal{F}_{\boldsymbol{\mathcal{X}}}^{(l)}$ to adopt the same GGNN layer $\mathcal{F}$ and have different output modules:
     
+    \begin{equation}
+    \begin{aligned}
+        & \forall l \in [1, 2, \ldots, L].\quad \boldsymbol{H}^l = \boldsymbol{\mathcal{F}}\left(\boldsymbol{\mathcal{H}}^{(l, 1)}\right),\\
+        & \boldsymbol{o}^{(l)} = 
+        \boldsymbol{\mathcal{O}} \left(concat[\boldsymbol{H}^l, \boldsymbol{\mathcal{X}}^{(1)}]\right),
+        \boldsymbol{\mathcal{X}}^{(l+1)} = \boldsymbol{\mathcal{P}}\left(concat[\boldsymbol{H}^l, \boldsymbol{\mathcal{X}}^{(1)}]\right),
+    \end{aligned}
+    \end{equation}
+    where $\boldsymbol{\mathcal{O}}$ is an output module, and $\boldsymbol{\mathcal{P}}$ is a multi-layer perceptron for propagating information to the next prediction step.
+    \vspace{0.2in}
     
-    \begin{block}{Method}
-      \textbf{Method details.} We formulate... $\mathcal S = \{s_1, s_2, s_3, s_4, s_5, s_6 \}$
-
-      Image example:
-      \begin{center}
-        \includegraphics[width=0.9\columnwidth]{ox_brand_cmyk_rev}
-      \end{center}
+    The loss can be calculated using the target sequence and the output sequence $[\boldsymbol{o}^{(1)}, \boldsymbol{o}^{(2)}, \ldots, \boldsymbol{o}^{(L)}]$
+    
     \end{block}
+    
+    
+    
 
   \end{column} % End of the 2nd column
 
@@ -232,14 +252,13 @@
     
   \begin{column}{.3\textwidth} % 3rd column
   
-  
-
-    \begin{block}{Results}
-      Results...
+  \vspace{\shrink}
+    \begin{block}{Experiments}
+      We contrasted the reproduced GGNNs and GGSNNs, as well as baseline recurrent neural networks, with the implementations in the \cite{DBLP:journals/corr/LiTBZ15} paper, on a subset of bAbI tasks \cite{DBLP:journals/corr/WestonBCM15}.
     \end{block}
 
     \begin{block}{References}
-      \nocite{*} % Insert publications even if they are not cited in the poster
+    %   \nocite{*} % Insert publications even if they are not cited in the poster
       \linespread{0.928}\selectfont
       \footnotesize{\bibliographystyle{unsrt}
       \bibliography{oxford_poster}}
