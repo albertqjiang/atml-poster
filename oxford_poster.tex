@@ -39,6 +39,7 @@
 \usepackage{microtype}
 \usepackage{subcaption}
 \usepackage{tcolorbox}
+\usepackage{multirow}
 
 % custom coloured box
 \definecolor{darkgreen}{rgb}{0,.7,0}
@@ -254,7 +255,39 @@
   
   \vspace{\shrink}
     \begin{block}{Experiments}
-      We contrasted the reproduced GGNNs and GGSNNs, as well as baseline recurrent neural networks, with the implementations in the \cite{DBLP:journals/corr/LiTBZ15} paper, on a subset of bAbI tasks \cite{DBLP:journals/corr/WestonBCM15}.
+      We contrasted the reproduced GGNNs and GGSNNs, as well as baseline recurrent neural networks, with the implementations in the paper~\cite{DBLP:journals/corr/LiTBZ15}, on a subset of bAbI tasks \cite{DBLP:journals/corr/WestonBCM15}. These tasks are bAbI task (4) Two argument relations, (15) Basic deduction, (16) Basic induction, (18) Size reasoning, and (19) Path finding. The tasks are represented in a symbolic logic form and converted to graphs for GGNNs and GGSNNs. The results are presented in Table \ref{table:table-1}.\vspace{0.1in}
+      
+      \begin{table}[t]
+          \caption{Test accuracies~(in \%) of the models for selected bAbI tasks. Number in parentheses denotes the number of training examples required to reach the accuracy shown. Only the best highest accuracies of models and the minimum number of training examples to achieve them are shown.}\label{table:table-1}
+          \vspace{0.1in}
+          \centering
+          \small
+          \begin{tabular}{cccccc}
+              \toprule
+              bAbI Task & Implementation & RNN & LSTM & GGNN \\  \midrule
+              \multirow{2}{*}{4} & Li et al. & $97.3 \pm 1.9\thinspace (250)$ & $97.4 \pm 2.0\thinspace  (250)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$ \\
+              & ours & $98.9 \pm 1.4\thinspace (250)$ & $96.6 \pm 2.5\thinspace (250)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$ \\  \midrule
+        
+              \multirow{2}{*}{15} & Li et al. &  $48.6 \pm 1.9\thinspace (950)$ & $50.3 \pm 1.3\thinspace (950)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$  \\
+              & ours & $38.6 \pm 3.7\thinspace (950)$ & $49.9 \pm 0.7\thinspace (950)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$ \\  \midrule
+        
+              \multirow{2}{*}{16} & Li et al. &  $33.0 \pm 1.9\thinspace (950)$&  $37.5 \pm 0.9\thinspace (950)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$  \\
+              & ours & $35.0 \pm 1.5\thinspace (950)$ & $39.0 \pm 0.9\thinspace (950)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$ \\  \midrule
+        
+              \multirow{2}{*}{18} & Li et al. & $88.9 \pm 0.9\thinspace (950)$ & $88.9 \pm 0.8\thinspace (950)$ & $\mathbf{100.0 \pm 0.0\thinspace (50)}$ \\
+              & ours & $89.6 \pm 0.4\thinspace (950)$ & $89.4 \pm 0.7\thinspace (950)$ & $99.6\pm 0.3\thinspace (500)$\\ \midrule
+              
+              bAbI Task & Implementation & RNN & LSTM & GGSNN \\  \midrule
+              
+              \multirow{2}{*}{19} & Li et al. & $24.7 \pm 2.7\thinspace (950)$ & $28.2 \pm 1.3\thinspace (950)$ & $99.0\pm1.1\thinspace (250)$\\ 
+              & ours & $28.3 \pm 1.9\thinspace (950)$ & $29.7 \pm 1.8\thinspace (950)$ & $\mathbf{99.1\pm 0.8}\thinspace (500)$\\ \bottomrule
+        \end{tabular}
+        \end{table}
+        \vspace{0.2in}
+        
+    \begin{itemize}
+        \item \textcolor{darkred}{Reproducibility}\thinspace 
+    \end{itemize}
     \end{block}
 
     \begin{block}{References}
