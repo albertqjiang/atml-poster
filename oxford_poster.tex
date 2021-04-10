@@ -37,6 +37,13 @@
 %\boldmath % Use bold for everything within the math environment
 \usepackage{booktabs} % Top and bottom rules for tables
 \usepackage{microtype}
+\usepackage{subcaption}
+\usepackage{tcolorbox}
+
+% custom coloured box
+\definecolor{darkgreen}{rgb}{0,.7,0}
+\definecolor{darkred}{rgb}{0.54,0,0}
+\definecolor{camblue}{rgb}{0.639,0.757,0.678}
 
 \usecaptiontemplate{\small\structure{\insertcaptionname~\insertcaptionnumber: }\insertcaption} % A fix for figure numbering
 
@@ -51,10 +58,10 @@
 %----------------------------------------------------------------------------------------
 %   TITLE SECTION 
 %----------------------------------------------------------------------------------------
-\title{\Huge Oxford\\ Beamer Poster} % Poster title
-\author{Author 1, Author 2, Author 3}
-\institute{Department of Engineering Science, University of Oxford\\\vspace{4mm}
-\texttt{\{author1,author2,author3\}@robots.ox.ac.uk}}
+\title{ATML Paper Reproduction Challenge} % Poster title
+\author{Jad Ghalayini, Albert Qiaochu Jiang, Kamilė Stankevičiūtė}
+\institute{Department of Computer Science, University of Oxford\\\vspace{4mm}
+\texttt{\{jad.ghalayini,qiaochu.jiang,kamile.stankeviciute\}@cs.ox.ac.uk}}
 
 %----------------------------------------------------------------------------------------
 %   FOOTER TEXT
@@ -79,20 +86,86 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   \begin{column}{.3\textwidth} % 1st column
-
     \vspace{\shrink}          
-    \begin{block}{Overview}
+    \begin{block}{Selected Paper: Gated Graph Sequence Neural Networks~\cite{DBLP:journals/corr/LiTBZ15}}
+    
       \begin{itemize}
-          \item Overview 1
-          \item Overview 2
-          \item Overview 3
-          \item Overview 4
+          \item Introducing new architectures for graph representation learning.
+          \item Benchmarking the newly introduced GNNs against baseline RNNs on bAbI tasks and graph algorithm learning tasks.
+          \item Demonstrating the practical use of new architectures for program verification.
       \end{itemize}
+      
+      
+      The introduced architectures are \vspace{0.2in}
+      \begin{tcolorbox}[colframe=white, colback=camblue!20]{
+      \textcolor{darkred}{Gated Graph Neural Networks~(GGNN)} for making single-step predictions.
+      \vspace{0.2in}
+      
+      \textcolor{darkred}{Gated Graph Sequence Neural Networks~(GGSNN)} for making multiple-step predictions.}
+        
+        \end{tcolorbox}
     \end{block}
-
-    \begin{block}{Another block}
-      Block text \cite{le-2016-inference-compilation}...
+    
+    
+    
+    \vspace{\shrink} 
+    \begin{block}{Recurrent Graph Neural Networks}
+    Use recurrence to model propagation
+    
+      \begin{figure}
+        \centering
+        \begin{subfigure}{.25\textwidth}
+          \centering
+          \includegraphics[height=3in]{imgs/example-graph.pdf}
+          \caption{}
+          \label{fig:sub1}
+        \end{subfigure}%
+        \hfill
+        \begin{subfigure}{.43\textwidth}
+          \centering
+          \includegraphics[height=3in]{imgs/recurrent-matrix-sparsity-pattern2.pdf}
+          \caption{}
+          \label{fig:sub2}
+        \end{subfigure}
+        \begin{subfigure}{.25\textwidth}
+          \centering
+          \includegraphics[height=3in]{imgs/unrolled-graph3.pdf}
+          \caption{}
+          \label{fig:sub2}
+        \end{subfigure}
+        
+        \caption{(a) An example of a directed graph. Colour denotes the type of the edge. (b) Adjacency matrix with edge typing. (c) Message passing by unrolling recurrence for one timestep. Dotted lines denote propagation in reverse edge directions. This figure is a re-ordered duplicate of Figure 1 from \cite{DBLP:journals/corr/LiTBZ15}.}
+        \label{fig:test}
+      \end{figure}
+      
+      
     \end{block}
+    
+     \vspace{\shrink} 
+    \begin{block}{Gated Graph Neural Networks}
+    We explain the mechanism implemented by a GGNN on a graph $\mathcal{G}=(\mathcal{V}, \mathcal{E})$, where $\mathcal{V}$ is the set of all the nodes, and $\mathcal{E}$ is the set of all the edges. For an arbitrary directed edge of type $T$, we also include a directed edge of type $T'$ in $\mathcal{E}$.
+    \vspace{0.2in}
+    
+    \textcolor{darkred}{Initialisation}\quad The latent representations for graph nodes are initialised by padding the node annotations:
+    \begin{equation}
+        \forall v \in \mathcal{V}. \quad \mathbf{h}_v^{0} = [\mathbf{x}_v^T, \mathbf{0}]^T
+    \end{equation}
+    
+    
+    \textcolor{darkred}{Message Passing}\quad For an edge $u \to v$ of type $A$, let $\mathbf{h}_u^t$, $\mathbf{h}_v^t$ be the latent representations for $u$ and $v$ at the $t$-th step, and $\mathbf{A}$ be the edge type matrix associated with $A$. The message to pass from $u$ to $v$ is
+    \begin{equation}
+        \mathbf{m}_{uv}^t = \mathbf{A} \mathbf{h}_u^t.
+    \end{equation}
+    
+    \textcolor{darkred}{Propagation}\quad To aggregate messages from its neighbours, each node updates its representation by 
+    
+    
+    
+    \end{block}
+    
+    
+    
+    
   \end{column} % End of the 1st column
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

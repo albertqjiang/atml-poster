@@ -27,7 +27,7 @@
 \setbeamercolor{title in head/foot}{fg=white, bg=oxfordblue}
 
 \setbeamercolor*{normal text}{fg=black, bg=white}
-\setbeamercolor*{block body}{bg=lightgrey,fg=oxfordblue}
+\setbeamercolor*{block body}{bg=white,fg=oxfordblue}
 \setbeamercolor*{block title}{fg=white,bg=oxfordblue}
 \setbeamerfont{block title}{size=\large,series=\bf}
 \setbeamercolor{upper separation line head}{fg=oxfordblue}
@@ -61,6 +61,7 @@
   \setbeamertemplate{block end}{
   \end{beamercolorbox}
 }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setbeamertemplate{headline}{  
@@ -121,21 +122,21 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setbeamertemplate{footline}{
-  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+%   \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+%     \rule{0pt}{3pt}
+%   \end{beamercolorbox}
+  
+%   \leavevmode%
+ \begin{beamercolorbox}[ht=2ex,leftskip=1em,rightskip=1em]{author in head/foot}%
+    \texttt{\leftfoot}
+    \hfill
+    \texttt{\rightfoot}
+    \vskip1ex
+ \end{beamercolorbox}
+  \vskip0pt%
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
     \rule{0pt}{3pt}
   \end{beamercolorbox}
-  
-  \leavevmode%
-%  \begin{beamercolorbox}[ht=2ex,leftskip=1em,rightskip=1em]{author in head/foot}%
-%    \texttt{\leftfoot}
-%    \hfill
-%    \texttt{\rightfoot}
-%    \vskip1ex
-%  \end{beamercolorbox}
-  %\vskip0pt%
-  %\begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
-  %  \rule{0pt}{3pt}
-  %\end{beamercolorbox}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
