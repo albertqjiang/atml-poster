@@ -108,7 +108,7 @@
     
     
     
-    \vspace{\shrink} 
+    \vspace{-0.6in} 
     \begin{block}{Recurrent Graph Neural Networks}
     Use recurrence to model propagation
     
@@ -141,26 +141,27 @@
       
     \end{block}
     
-     \vspace{\shrink} 
+     \vspace{-0.6in} 
     \begin{block}{Gated Graph Neural Networks}
-    We explain the mechanism implemented by a GGNN on a graph $\mathcal{G}=(\mathcal{V}, \mathcal{E})$, where $\mathcal{V}$ is the set of all the nodes, and $\mathcal{E}$ is the set of all the edges. For an arbitrary directed edge of type $T$, we also include a directed edge of type $T'$ in $\mathcal{E}$.
+    We explain the mechanism implemented by a GGNN on a graph $\mathcal{G}=(\mathcal{V}, \mathcal{E})$, where $\mathcal{V}$ is the set of all the nodes, and $\mathcal{E}$ is the set of all the edges. Each node $v$ has annotations $x_v$. For an arbitrary directed edge from $u$ to $v$ of type $T$, we also include a directed edge from $v$ to $u$ of type $T'$ in $\mathcal{E}$.
     \vspace{0.2in}
     
     \textcolor{darkred}{Initialisation}\quad The latent representations for graph nodes are initialised by padding the node annotations:
     \begin{equation}
-        \forall v \in \mathcal{V}. \quad \mathbf{h}_v^{0} = [\mathbf{x}_v^T, \mathbf{0}]^T
+        \forall v \in \mathcal{V}. \quad \mathbf{h}_v^{0} = [\mathbf{x}_v^T, \mathbf{0}]^T.
     \end{equation}
     
     
-    \textcolor{darkred}{Message Passing}\quad For an edge $u \to v$ of type $A$, let $\mathbf{h}_u^t$, $\mathbf{h}_v^t$ be the latent representations for $u$ and $v$ at the $t$-th step, and $\mathbf{A}$ be the edge type matrix associated with $A$. The message to pass from $u$ to $v$ is
+    \textcolor{darkred}{Message Passing}\quad For an edge $u \to v$ of type $A$, let $\mathbf{h}_u^t$, $\mathbf{h}_v^t$ be the latent representations for $u$ and $v$ at the $t$-th step, and $\mathbf{A}, \mathbf{b}_A$ be the trainable edge type weight and bias associated with $A$. The message to pass from $u$ to $v$ is
     \begin{equation}
-        \mathbf{m}_{uv}^t = \mathbf{A} \mathbf{h}_u^t.
+        \mathbf{m}_{uv}^t = \mathbf{A} \mathbf{h}_u^{t-1} + \mathbf{b}_A.
     \end{equation}
     
-    \textcolor{darkred}{Propagation}\quad To aggregate messages from its neighbours, each node updates its representation by 
-    
-    
-    
+    \textcolor{darkred}{Propagation}\quad At each iteration, each node representation is updated by combining messages from its neighbours and the latent representation from the last iteration:
+    \begin{equation}
+        \forall v \in \mathcal{V}. \quad \mathbf{h}_v^t = \textsc{GRU}\left(\mathbf{h}_v^{t-1}, 
+         + add(\{\mathbf{m}_{uv}^t \mid (u, v) \in \mathcal{E} \})\right).
+    \end{equation}
     \end{block}
     
     
@@ -175,7 +176,43 @@
   \begin{column}{.02\textwidth}\end{column} % Empty spacer column
 
   \begin{column}{.3\textwidth} % 2nd column
-    \vspace{\shrink}
+    % \vspace{\shrink}
+    % \vspace{0.1in}
+    
+    \textcolor{darkred}{Output Modules} After $T$ iterations, the final latent representations for all the nodes are
+    \begin{equation}
+        \forall v \in \mathcal{V}.\quad \mathbf{s}_v = \mathbf{h}_v^T.
+    \end{equation}
+    
+    An output module is used to obtain the appropriate output for each task. Two types of tasks are considered.
+    \begin{itemize}
+        \item Node selection. A differentiable scoring function $f_s$ and a softmax function are used to obtain a categorical distribution on nodes:
+        \begin{equation}
+            \mathbf{p}_{node} = \mathsf{softmax}\left(f_s([\mathbf{s}_{v_1}, \mathbf{s}_{v_2}, \ldots, \mathbf{s}_{v_{\mid \mathcal{V}\mid}}]^T)\right).
+        \end{equation}
+        \item Graph classification. A graph readout is first obtained for each graph $\mathcal{G}$:
+        \begin{equation}
+            \mathbf{h}_{\mathcal{G}} = \bigg(
+                \displaystyle\sum_{v\in\mathcal{V}}  
+                \sigma \left(f_1\left([\mathbf{s}_v^T, \mathbf{x}_v^T]^T\right)\right)
+                \odot
+                \tanh \left(f_2\left([\mathbf{s}_v^T, \mathbf{x}_v^T]^T\right)\right)
+            \bigg),
+        \end{equation}
+        where $f_1$ and $f_2$ are both implemented by neural networks, $\sigma$ is the sigmoid function, $\tanh$ is the hyperbolic tangent function, and $\odot$ is element-wise production. Then a neural network function $f_c$ takes the graph readout and produces a probability vector over the classification categories:
+        \begin{equation}
+            \mathbf{p}_{\mathcal{G}} = \mathsf{softmax}\left(f_c\left(\mathbf{h}_{\mathcal{G}}\right)\right).
+        \end{equation}
+    \end{itemize}
+    
+    For a fixed number of recurrent unrolling steps, \textbf{GGNN is entirely differentiable.} This was not the case for previous GNNs based on contraction maps. 
+    
+    Calculate gradients by back-propagation and back-propagation through time $\implies$ great boost to optimisation.
+    
+    
+    
+    
+    
     \begin{block}{Method}
       \textbf{Method details.} We formulate... $\mathcal S = \{s_1, s_2, s_3, s_4, s_5, s_6 \}$
 
@@ -192,8 +229,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   \begin{column}{.02\textwidth}\end{column} % Empty spacer column
-
+    
   \begin{column}{.3\textwidth} % 3rd column
+  
+  
 
     \begin{block}{Results}
       Results...
