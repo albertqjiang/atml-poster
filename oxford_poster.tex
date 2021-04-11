@@ -133,7 +133,7 @@
     % \end{block}
     
      \vspace{-0.6in} 
-    \begin{block}{Gated Graph Neural Networks}
+    \begin{block}{Gated Graph Neural Networks (GGNNs)}
     Let $\mathcal{G}=(\mathcal{V}, \mathcal{E})$ be a graph where $\mathcal{V}$ is the set of nodes, and $\mathcal{E}$ is the set of edges. Each node $v$ has an annotation $\mathbf{x}_v$, and every edge has a type—for an arbitrary directed edge $u \leadsto v$ of type $A$, there is a directed edge from $v \leadsto u$ of type $A'$. The GGNN is implemented as follows:
     \vspace{0.2in}
     
@@ -176,9 +176,6 @@
 
     \end{block}
     
-    
-    
-    
   \end{column} % End of the 1st column
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,60 +185,39 @@
   \begin{column}{.02\textwidth}\end{column} % Empty spacer column
 
   \begin{column}{.3\textwidth} % 2nd column
-    % \vspace{\shrink}
+    \vspace{\shrink}
     % \vspace{0.1in}
     
     \color{oxfordblue}
     
     
-    
-    \begin{block}{Gated Graph Sequence Neural Networks}
-    GGNNs can take graphs as inputs and have a single output. To work with sequential outputs, a GGSNN is needed. Here, we explain the mechanism of a GGSNN with shared output and propagation modules producing an output sequence of length $L$.\vspace{0.2in}
-    
-    A schematic of the GGSNN architecture is shown in Figure \ref{fig:GGSNN}.
+    \begin{block}{Gated Graph Sequence Neural Networks (GGSNNs)}
+     GGSNN is an extension of the GGNN architecture that is capable of returning a \textcolor{darkred}{sequence} of outputs. A schematic of the GGSNN architecture is shown in Figure \ref{fig:GGSNN}.
+
     \begin{figure}
         \centering
         \includegraphics[width=\textwidth]{imgs/ggsnn.png}
-        \caption{Diagram of the GGSNN mechanism. This is a duplicate of Figure 2 in \cite{DBLP:journals/corr/LiTBZ15}.}
+        \caption{Diagram of the GGSNN mechanism. Taken from Figure 2 in \cite{DBLP:journals/corr/LiTBZ15}.}
         \label{fig:GGSNN}
     \end{figure}
-    At each \textbf{Init} step, $\boldsymbol{\mathcal{X}}^{(l)}$ is padded with 0: $\boldsymbol{\mathcal{H}}^{(l, 1)} = [\boldsymbol{\mathcal{X}}^{(l)}, \boldsymbol{0}]$.
-    Because we use a shared propagation model, we have $\mathcal{F}_{}^{(l)}$ and $\mathcal{F}_{\boldsymbol{\mathcal{X}}}^{(l)}$ to adopt the same GGNN layer $\mathcal{F}$ and have different output modules:
+    In a GGSNN 
+    %with shared output and propagation modules 
+    producing an output sequence of length $L$, each \textbf{Init} step pads the input annotations $\boldsymbol{\mathcal{X}}^{(l)}$ with 0: $\boldsymbol{\mathcal{H}}^{(l, 1)} = [\boldsymbol{\mathcal{X}}^{(l)}, \boldsymbol{0}]$.
+    When the propagation model is shared, the output model $\mathcal{F}_{\mathbf o}^{(l)}$ and propagation model $\mathcal{F}_{\boldsymbol{\mathcal{X}}}^{(l)}$ adopt the same GGNN layer $\mathcal{F}$ but have different output modules:
     
     \begin{equation}
-    \begin{aligned}
-        & \forall l \in [1, 2, \ldots, L].\quad \boldsymbol{H}^l = \boldsymbol{\mathcal{F}}\left(\boldsymbol{\mathcal{H}}^{(l, 1)}\right),\\
-        & \boldsymbol{o}^{(l)} = 
-        \boldsymbol{\mathcal{O}} \left(concat[\boldsymbol{H}^l, \boldsymbol{\mathcal{X}}^{(1)}]\right),
-        \boldsymbol{\mathcal{X}}^{(l+1)} = \boldsymbol{\mathcal{P}}\left(concat[\boldsymbol{H}^l, \boldsymbol{\mathcal{X}}^{(1)}]\right),
-    \end{aligned}
+        \mathbf{H}^l = \boldsymbol{\mathcal{F}}\left(\boldsymbol{\mathcal{H}}^{(l, 1)}\right),\, \boldsymbol{o}^{(l)} = 
+        \boldsymbol{\mathcal{O}} \left([\mathbf{H}^l, \boldsymbol{\mathcal{X}}^{(1)}]\right),\, 
+        \boldsymbol{\mathcal{X}}^{(l+1)} = \boldsymbol{\mathcal{P}}\left([\mathbf{H}^l, \boldsymbol{\mathcal{X}}^{(1)}]\right),
     \end{equation}
     where $\boldsymbol{\mathcal{O}}$ is an output module, and $\boldsymbol{\mathcal{P}}$ is a multi-layer perceptron for propagating information to the next prediction step.
-    \vspace{0.2in}
-    
-    The loss can be calculated using the target sequence and the output sequence $[\boldsymbol{o}^{(1)}, \boldsymbol{o}^{(2)}, \ldots, \boldsymbol{o}^{(L)}]$
-    
     \end{block}
-    
-    
-    
-
-  \end{column} % End of the 2nd column
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Column 3
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-  \begin{column}{.02\textwidth}\end{column} % Empty spacer column
-    
-  \begin{column}{.3\textwidth} % 3rd column
-  
-  \vspace{\shrink}
+    \vspace{-0.6in} 
     \begin{block}{Experiments}
-      We contrasted the reproduced GGNNs and GGSNNs, as well as baseline recurrent neural networks, with the implementations in the paper~\cite{DBLP:journals/corr/LiTBZ15}, on a subset of bAbI tasks \cite{DBLP:journals/corr/WestonBCM15}. These tasks are bAbI task (4) Two argument relations, (15) Basic deduction, (16) Basic induction, (18) Size reasoning, and (19) Path finding. The tasks are represented in a symbolic logic form and converted to graphs for GGNNs and GGSNNs. The results are presented in Table \ref{table:table-1}.\vspace{0.1in}
+      We reproduced the results of GG(S)NNs and the RNN/LSTM baselines on five bAbI tasks~\cite{DBLP:journals/corr/WestonBCM15}: Two argument relations, Basic deduction, Basic induction, Size reasoning, and Path finding (Tasks 4, 15, 16, 18, 19). Tasks are represented in a symbolic form and converted to graphs. The reproduction results are presented in Table \ref{table:table-1}.\vspace{0.1in}
       
       \begin{table}[t]
-          \caption{Test accuracies~(in \%) of the models for selected bAbI tasks. Number in parentheses denotes the number of training examples required to reach the accuracy shown. Only the best highest accuracies of models and the minimum number of training examples to achieve them are shown.}\label{table:table-1}
+          \caption{Test accuracies~(in \%) of the models for selected bAbI tasks. Number in parentheses denotes the number of training examples.}\label{table:table-1}
           \vspace{0.1in}
           \centering
           \small
@@ -268,11 +244,24 @@
         \end{table}
         \vspace{0.2in}
         
-    \begin{itemize}
-        \item \textcolor{darkred}{Reproducibility}\thinspace Given that the highest accuracies for each of the models matched very closely with those reported in the papaer, we consider the model as well as the bAbI experiments reproducible.
-        \item \textcolor{darkred}{Difference in sample complexity}\thinspace Our models for tasks 18 and 19 have lower sample complexities since they need 500 training examples to reach the highest test accuracies, while the original implementation needs only 50 and 250, respectively.
-    \end{itemize}
+        \textcolor{darkred}{Reproducibility.} Given that the highest accuracies for each of the models matched very closely with those reported in the paper, we consider the model as well as the bAbI experiments reproducible.
+        
+        \textcolor{darkred}{Sample complexity.} Our models for Tasks 18 and 19 have lower sample complexities since they need 500 examples to reach the highest test accuracies, while~\cite{DBLP:journals/corr/LiTBZ15} used only 50 and 250, respectively.
+
     \end{block}
+    
+
+  \end{column} % End of the 2nd column
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Column 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{column}{.02\textwidth}\end{column} % Empty spacer column
+    
+  \begin{column}{.3\textwidth} % 3rd column
+  
+  \vspace{\shrink}
     
     \begin{block}{Extensions}
     
