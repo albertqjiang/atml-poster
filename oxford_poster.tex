@@ -92,46 +92,45 @@
     \begin{block}{Summary of the paper}
       
       \begin{itemize}
-          \item The paper presents \textcolor{darkred}{Gated Graph (Sequence) Neural Networks~(GG(S)NNs)}, architectures which leverage the temporal patterns of message passing to produce sequence outputs.
-          \item GG(S)NNs are benchmarked against baseline RNNs on a subset of reasoning tasks in the bAbI dataset, two additional graph algorithm learning tasks, and are applied to a real-world task in the program verification domain.
+          \item The paper presents \textcolor{darkred}{Gated Graph (Sequence) Neural Networks~(GG(S)NNs)}, architectures that leverage the temporal patterns of message passing in graph-structured data to produce \textcolor{darkred}{sequence outputs}.
+          \item GG(S)NNs are benchmarked against baseline RNNs on a subset of reasoning tasks in the bAbI dataset and two additional graph algorithm learning tasks, and are applied to a real-world task in the program verification domain.
       \end{itemize}
 
     \end{block}
     
+
+    % \vspace{-0.6in} 
+    % \begin{block}{Recurrent Graph Neural Networks}
+    % Node aggregation can be modelled by recurrence.
     
-    
-    \vspace{-0.6in} 
-    \begin{block}{Recurrent Graph Neural Networks}
-    Node aggregation can be modelled by recurrence.
-    
-      \begin{figure}
-        \centering
-        \begin{subfigure}{.25\textwidth}
-          \centering
-          \includegraphics[height=3in]{imgs/example-graph.pdf}
-          \caption{}
-          \label{fig:sub1}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{.43\textwidth}
-          \centering
-          \includegraphics[height=3in]{imgs/recurrent-matrix-sparsity-pattern2.pdf}
-          \caption{}
-          \label{fig:sub2}
-        \end{subfigure}
-        \begin{subfigure}{.25\textwidth}
-          \centering
-          \includegraphics[height=3in]{imgs/unrolled-graph3.pdf}
-          \caption{}
-          \label{fig:sub2}
-        \end{subfigure}
+    %   \begin{figure}
+    %     \centering
+    %     \begin{subfigure}{.25\textwidth}
+    %       \centering
+    %       \includegraphics[height=3in]{imgs/example-graph.pdf}
+    %       \caption{}
+    %       \label{fig:sub1}
+    %     \end{subfigure}%
+    %     \hfill
+    %     \begin{subfigure}{.43\textwidth}
+    %       \centering
+    %       \includegraphics[height=3in]{imgs/recurrent-matrix-sparsity-pattern2.pdf}
+    %       \caption{}
+    %       \label{fig:sub2}
+    %     \end{subfigure}
+    %     \begin{subfigure}{.25\textwidth}
+    %       \centering
+    %       \includegraphics[height=3in]{imgs/unrolled-graph3.pdf}
+    %       \caption{}
+    %       \label{fig:sub2}
+    %     \end{subfigure}
         
-        \caption{(a) An example of a directed graph. Colour denotes the type of the edge. (b) Adjacency matrix with edge typing. (c) Message passing by unrolling recurrence for one timestep. Dotted lines denote propagation in reverse edge directions. This figure is a re-ordered duplicate of Figure 1 from \cite{DBLP:journals/corr/LiTBZ15}.}
-        \label{fig:test}
-      \end{figure}
+    %     \caption{(a) An example of a directed graph. Colour denotes the type of the edge. (b) Adjacency matrix with edge typing. (c) Message passing by unrolling recurrence for one timestep. Dotted lines denote propagation in reverse edge directions. This figure is a re-ordered duplicate of Figure 1 from \cite{DBLP:journals/corr/LiTBZ15}.}
+    %     \label{fig:test}
+    %   \end{figure}
       
       
-    \end{block}
+    % \end{block}
     
      \vspace{-0.6in} 
     \begin{block}{Gated Graph Neural Networks}
