@@ -60,7 +60,7 @@
 %----------------------------------------------------------------------------------------
 %   TITLE SECTION 
 %----------------------------------------------------------------------------------------
-\title{ATML Paper Reproduction Challenge} % Poster title
+\title{ATML Paper Reproduction Challenge: Gated Graph Sequence Neural Networks~\cite{DBLP:journals/corr/LiTBZ15}} % Poster title
 \author{Jad Ghalayini, Albert Qiaochu Jiang, Kamilė Stankevičiūtė}
 \institute{Department of Computer Science, University of Oxford\\\vspace{4mm}
 \texttt{\{jad.ghalayini,qiaochu.jiang,kamile.stankeviciute\}@cs.ox.ac.uk}}
@@ -89,81 +89,91 @@
 
   \begin{column}{.3\textwidth} % 1st column
     \vspace{\shrink}          
-    \begin{block}{Selected Paper: Gated Graph Sequence Neural Networks~\cite{DBLP:journals/corr/LiTBZ15}}
-    
+    \begin{block}{Summary of the paper}
+      
       \begin{itemize}
-          \item Introducing new architectures for graph representation learning.
-          \item Benchmarking the newly introduced GNNs against baseline RNNs on bAbI tasks and graph algorithm learning tasks.
-          \item Demonstrating the practical use of new architectures for program verification.
+          \item The paper presents \textcolor{darkred}{Gated Graph (Sequence) Neural Networks}, or \textcolor{darkred}{GG(S)NNs}—architectures that leverage the temporal patterns of message passing in graph-structured data to produce \textcolor{darkred}{sequence outputs}.
+          \item GG(S)NNs are benchmarked against baseline RNNs on a subset of reasoning tasks in the bAbI dataset and two additional graph algorithm learning tasks, and are applied to a real-world task in the program verification domain.
       \end{itemize}
-      
-      
-      The introduced architectures are \vspace{0.2in}
-      \begin{tcolorbox}[colframe=white, colback=camblue!20]{
-      \textcolor{darkred}{Gated Graph Neural Networks~(GGNN)} for making single-step predictions.
-      \vspace{0.2in}
-      
-      \textcolor{darkred}{Gated Graph Sequence Neural Networks~(GGSNN)} for making multiple-step predictions.}
-        
-        \end{tcolorbox}
+
     \end{block}
     
+
+    % \vspace{-0.6in} 
+    % \begin{block}{Recurrent Graph Neural Networks}
+    % Node aggregation can be modelled by recurrence.
     
-    
-    \vspace{-0.6in} 
-    \begin{block}{Recurrent Graph Neural Networks}
-    Node aggregation can be modelled by recurrence.
-    
-      \begin{figure}
-        \centering
-        \begin{subfigure}{.25\textwidth}
-          \centering
-          \includegraphics[height=3in]{imgs/example-graph.pdf}
-          \caption{}
-          \label{fig:sub1}
-        \end{subfigure}%
-        \hfill
-        \begin{subfigure}{.43\textwidth}
-          \centering
-          \includegraphics[height=3in]{imgs/recurrent-matrix-sparsity-pattern2.pdf}
-          \caption{}
-          \label{fig:sub2}
-        \end{subfigure}
-        \begin{subfigure}{.25\textwidth}
-          \centering
-          \includegraphics[height=3in]{imgs/unrolled-graph3.pdf}
-          \caption{}
-          \label{fig:sub2}
-        \end{subfigure}
+    %   \begin{figure}
+    %     \centering
+    %     \begin{subfigure}{.25\textwidth}
+    %       \centering
+    %       \includegraphics[height=3in]{imgs/example-graph.pdf}
+    %       \caption{}
+    %       \label{fig:sub1}
+    %     \end{subfigure}%
+    %     \hfill
+    %     \begin{subfigure}{.43\textwidth}
+    %       \centering
+    %       \includegraphics[height=3in]{imgs/recurrent-matrix-sparsity-pattern2.pdf}
+    %       \caption{}
+    %       \label{fig:sub2}
+    %     \end{subfigure}
+    %     \begin{subfigure}{.25\textwidth}
+    %       \centering
+    %       \includegraphics[height=3in]{imgs/unrolled-graph3.pdf}
+    %       \caption{}
+    %       \label{fig:sub2}
+    %     \end{subfigure}
         
-        \caption{(a) An example of a directed graph. Colour denotes the type of the edge. (b) Adjacency matrix with edge typing. (c) Message passing by unrolling recurrence for one timestep. Dotted lines denote propagation in reverse edge directions. This figure is a re-ordered duplicate of Figure 1 from \cite{DBLP:journals/corr/LiTBZ15}.}
-        \label{fig:test}
-      \end{figure}
+    %     \caption{(a) An example of a directed graph. Colour denotes the type of the edge. (b) Adjacency matrix with edge typing. (c) Message passing by unrolling recurrence for one timestep. Dotted lines denote propagation in reverse edge directions. This figure is a re-ordered duplicate of Figure 1 from \cite{DBLP:journals/corr/LiTBZ15}.}
+    %     \label{fig:test}
+    %   \end{figure}
       
       
-    \end{block}
+    % \end{block}
     
      \vspace{-0.6in} 
     \begin{block}{Gated Graph Neural Networks}
-    We explain the mechanism implemented by a GGNN on a graph $\mathcal{G}=(\mathcal{V}, \mathcal{E})$, where $\mathcal{V}$ is the set of all the nodes, and $\mathcal{E}$ is the set of all the edges. Each node $v$ has annotations $x_v$. For an arbitrary directed edge from $u$ to $v$ of type $T$, we also include a directed edge from $v$ to $u$ of type $T'$ in $\mathcal{E}$.
+    Let $\mathcal{G}=(\mathcal{V}, \mathcal{E})$ be a graph where $\mathcal{V}$ is the set of nodes, and $\mathcal{E}$ is the set of edges. Each node $v$ has an annotation $\mathbf{x}_v$, and every edge has a type—for an arbitrary directed edge $u \leadsto v$ of type $A$, there is a directed edge from $v \leadsto u$ of type $A'$. The GGNN is implemented as follows:
     \vspace{0.2in}
     
-    \textcolor{darkred}{Initialisation}\quad The latent representations for graph nodes are initialised by padding the node annotations:
+    \textcolor{darkred}{Initialisation.} The latent representations for graph nodes are initialised by padding the node annotations:
     \begin{equation}
-        \forall v \in \mathcal{V}. \quad \mathbf{h}_v^{0} = [\mathbf{x}_v^T, \mathbf{0}]^T.
+        \forall v \in \mathcal{V}. \, \mathbf{h}_v^{(0)} = [\mathbf{x}_v^\top, \mathbf{0}]^\top.
     \end{equation}
     
     
-    \textcolor{darkred}{Message Passing}\quad For an edge $u \to v$ of type $A$, let $\mathbf{h}_u^t$, $\mathbf{h}_v^t$ be the latent representations for $u$ and $v$ at the $t$-th step, and $\mathbf{A}, \mathbf{b}_A$ be the trainable edge type weight and bias associated with $A$. The message to pass from $u$ to $v$ is
+    \textcolor{darkred}{Message passing.} For an edge $u \leadsto v$ of type $A$, $\mathbf{h}_u^{(t)}$ and $\mathbf{h}_v^{(t)}$ the latent representations for $u$ and $v$ at time $t$, and $\mathbf{A}$ the trainable parameter for the edge type $A$, the from $u$ to $v$ is
     \begin{equation}
-        \mathbf{m}_{uv}^t = \mathbf{A} \mathbf{h}_u^{t-1}.
+        \mathbf{m}_{uv}^{(t)} = \mathbf{A} \mathbf{h}_u^{(t-1)}.
     \end{equation}
     
-    \textcolor{darkred}{Propagation}\quad At each iteration, each node representation is updated by combining messages from its neighbours and the latent representation from the last iteration:
+    \textcolor{darkred}{Propagation.} At each iteration, each node representation is updated by combining messages from its neighbours and the latent representation from the last iteration, where $\mathbf{b}$ is the trainable bias vector:
     \begin{equation}
-        \forall v \in \mathcal{V}. \quad \mathbf{h}_v^t = \textsc{GRU}\left(\mathbf{h}_v^{t-1}, 
-         \mathbf{b} + add(\{\mathbf{m}_{uv}^t \mid (u, v) \in \mathcal{E} \})\right).
+        \forall v \in \mathcal{V}. \, \mathbf{h}_v^{(t)} = \mathrm{GRU}\left(\mathbf{h}_v^{(t-1)}, 
+        \mathrm{add}(\{\mathbf{m}_{uv}^{(t)} \mid (u, v) \in \mathcal{E} \}) + \mathbf{b}\right).
     \end{equation}
+
+    After $T$ iterations, the final latent representation for node $v$ is $\mathbf{s}_v = \mathbf{h}_v^{(T)}$.
+    \textcolor{darkred}{Output modules.} For \textcolor{darkred}{node selection} tasks, we use a scoring function $f_s$ to obtain a categorical distribution over nodes:
+        \begin{equation}
+            \mathbf{p}_{\mathrm{node}} = \mathrm{softmax}\left(f_s([\mathbf{s}_{v_1}, \mathbf{s}_{v_2}, \ldots, \mathbf{s}_{v_{\mid \mathcal{V}\mid}}]^T)\right).
+        \end{equation}
+    For \textcolor{darkred}{graph classification} tasks, we first obtain a graph readout:
+        \begin{equation}
+            \mathbf{h}_{\mathcal{G}} =
+                \sum_{v\in\mathcal{V}}  
+                \sigma \left(f_1\left([\mathbf{s}_v^\top, \mathbf{x}_v^\top]^\top\right)\right)
+                \odot
+                \tanh \left(f_2\left([\mathbf{s}_v^\top, \mathbf{x}_v^\top]^\top\right)\right),
+        \end{equation}
+        where $f_1$ and $f_2$ are neural networks, $\sigma$ is the sigmoid function, and $\odot$ is the element-wise product. A neural network $f_c$ produces a probability distribution over the classification categories:
+        \begin{equation}
+            \mathbf{p}_{\mathcal{G}} = \mathrm{softmax}\left(f_c\left(\mathbf{h}_{\mathcal{G}}\right)\right).
+        \end{equation}
+    
+    For a fixed number of recurrent unrolling steps, \textcolor{darkred}{the GGNN is entirely differentiable}, and gradients can be calculated back propagation through time, which is a boost to optimisation. This was not the case for previous GNNs relying on contraction maps.
+
     \end{block}
     
     
@@ -182,34 +192,7 @@
     % \vspace{0.1in}
     
     \color{oxfordblue}
-    \textcolor{darkred}{Output Modules} After $T$ iterations, the final latent representations for all the nodes are
-    \begin{equation}
-        \forall v \in \mathcal{V}.\quad \mathbf{s}_v = \mathbf{h}_v^T.
-    \end{equation}
     
-    An output module is used to obtain the appropriate output for each task. Two types of tasks are considered.
-    \begin{itemize}
-    \color{oxfordblue}
-        \item Node selection. A differentiable scoring function $f_s$ and a softmax function are used to obtain a categorical distribution on nodes:
-        \begin{equation}
-            \mathbf{p}_{node} = \mathsf{softmax}\left(f_s([\mathbf{s}_{v_1}, \mathbf{s}_{v_2}, \ldots, \mathbf{s}_{v_{\mid \mathcal{V}\mid}}]^T)\right).
-        \end{equation}
-        \item Graph classification. A graph readout is first obtained for each graph $\mathcal{G}$:
-        \begin{equation}
-            \mathbf{h}_{\mathcal{G}} = \bigg(
-                \displaystyle\sum_{v\in\mathcal{V}}  
-                \sigma \left(f_1\left([\mathbf{s}_v^T, \mathbf{x}_v^T]^T\right)\right)
-                \odot
-                \tanh \left(f_2\left([\mathbf{s}_v^T, \mathbf{x}_v^T]^T\right)\right)
-            \bigg),
-        \end{equation}
-        where $f_1$ and $f_2$ are both implemented by neural networks, $\sigma$ is the sigmoid function, $\tanh$ is the hyperbolic tangent function, and $\odot$ is element-wise production. Then a neural network function $f_c$ takes the graph readout and produces a probability vector over the classification categories:
-        \begin{equation}
-            \mathbf{p}_{\mathcal{G}} = \mathsf{softmax}\left(f_c\left(\mathbf{h}_{\mathcal{G}}\right)\right).
-        \end{equation}
-    \end{itemize}
-    
-    For a fixed number of recurrent unrolling steps, \textbf{GGNN is entirely differentiable. Gradients can be calculated by back propagation and back propagation through time.} $\implies$ a boost to optimisation. This was not the case for previous GNNs relying on contraction maps.
     
     
     \begin{block}{Gated Graph Sequence Neural Networks}
