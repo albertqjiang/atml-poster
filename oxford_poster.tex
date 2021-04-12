@@ -155,6 +155,8 @@
     \end{equation}
 
     After $T$ iterations, the final latent representation for node $v$ is $\mathbf{s}_v = \mathbf{h}_v^{(T)}$.
+    \vspace{0.2in}
+    
     \textcolor{darkred}{Output modules.} For \textit{node selection} tasks, we use a scoring function $f_s$ to obtain a categorical distribution over nodes:
         \begin{equation}
             \mathbf{p}_{\mathrm{node}} = \mathrm{softmax}\left(f_s([\mathbf{s}_{v_1}, \mathbf{s}_{v_2}, \ldots, \mathbf{s}_{v_{\mid \mathcal{V}\mid}}]^T)\right).
@@ -293,7 +295,7 @@
     \end{block}
 
     \begin{block}{Conclusion}
-      
+      We confirmed, via replicating the models and experiments, that the results from \cite{DBLP:journals/corr/LiTBZ15} are solid and reproducible. By doing a series of extension tasks, we further validated the design choices of \cite{DBLP:journals/corr/LiTBZ15} and the superior performance of the novel models proposed.
     \end{block}
 
 
