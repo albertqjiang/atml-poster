@@ -149,7 +149,7 @@
     \end{equation}
     
     \textcolor{darkred}{Propagation.} At each iteration, each node representation is updated by combining messages from its neighbours and the latent representation from the last iteration, where $\mathbf{b}$ is the trainable bias vector:
-    \begin{equation}
+    \begin{equation}\label{eq:GRU}
         \forall v \in \mathcal{V}. \, \mathbf{h}_v^{(t)} = \mathrm{GRU}\left(\mathbf{h}_v^{(t-1)}, 
         \mathrm{add}(\{\mathbf{m}_{uv}^{(t)} \mid (u, v) \in \mathcal{E} \}) + \mathbf{b}\right).
     \end{equation}
@@ -264,16 +264,43 @@
   \vspace{\shrink}
     
     \begin{block}{Extensions}
-    We extend the reproduction to answer three questions: (1) How important is the graph structure representation? (2) How important is the recurrent style of information processing? (3)
+
+      \textcolor{darkred}{Importance of the symbolic graph structure.} To test importance of the good graph representations, we removed the symbolic graph structure and replaced it with a linear graph (linked list) of sequential tokens which were used to train the RNN/LSTM baselines.
+      \vspace{0.2in}
+    
+      \textcolor{darkred}{Importance of the recurrent unit.} To understand the significance of the temporal patterns and the gated recurrent unit, we replaced the GRU propagation model in Eq.~\eqref{eq:GRU} with a simpler residual network structure:
+
+      \begin{equation}
+        \mathbf{h}_v^{(t)} = \mathrm{MLP}_2\left( \mathbf{h}_v^{(t-1)} + \mathrm{MLP}_1\left( \mathbf{a}_v^{(t)} \right) \right),
+      \end{equation}
+
+      where $\mathrm{MLP}$s are fully connected neural networks with one hidden layer and ReLU nonlinearity. The results are shown in Figure~\ref{fig:extension}. 
+      \vspace{0.2in}
+      \begin{figure}
+            \centering
+              \includegraphics[width=\textwidth]{imgs/extension_plot.pdf}
+            \caption{Results of the extension experiments. The drop in GGNN performance for linear graphs indicates poorer inductive bias, and increased variance of ResNets suggests better stability of GRUs.}
+            \label{fig:extension}
+          \end{figure}
+
+      \textcolor{darkred}{Application: heap checking.}
+
+      \textit{Experiment summary.}
+      \vspace{0.2in}
+
+      \textit{Findings.}
+    
     \end{block}
-    
-    
+
+    \begin{block}{Conclusion}
+      
+    \end{block}
+
 
     \begin{block}{References}
     %   \nocite{*} % Insert publications even if they are not cited in the poster
       \linespread{0.928}\selectfont
-      \footnotesize{\bibliographystyle{unsrt}
-      \bibliography{oxford_poster}}
+      \tiny{\printbibliography}
     \end{block}
     
     
