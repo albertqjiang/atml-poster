@@ -276,7 +276,10 @@
         \mathbf{h}_v^{(t)} = \mathrm{MLP}_2\left( \mathbf{h}_v^{(t-1)} + \mathrm{MLP}_1\left( \mathbf{a}_v^{(t)} \right) \right),
       \end{equation}
 
-      where $\mathrm{MLP}$s are fully connected neural networks with one hidden layer and ReLU nonlinearity. The results are shown in Figure~\ref{fig:extension}. 
+      where $\mathrm{MLP}$s are fully connected neural networks with one hidden layer and ReLU nonlinearity. 
+      
+      \vspace{0.1in}
+      The results for both experiments are shown in Figure~\ref{fig:extension}. 
       \vspace{0.2in}
       \begin{figure}
             \centering
@@ -287,18 +290,17 @@
 
       \textcolor{darkred}{Application: heap checking.}
 
-      \textit{Experiment summary.}
+      \textit{Experiment summary.} As a further practical application, we designed a new heap classification task, modelling it in sequence, symbolic and linear graph form, and tested the performance of GGNNs and RNN/LSTM baselines.
       \vspace{0.2in}
 
-      \textit{Findings.}
+      \textit{Findings.} We found that GGNNs had both higher and more reliable performance with more stable convergence (99.2 $\pm$ 0.8\% accuracy for the best GGNN vs 66.9 $\pm$ 15.7\% for RNNs and 78.3 $\pm$ 20.7\% for LSTMs), even when inputs were provided as a linear sequence of tokens, obscuring the graph structure of the problem.
     
     \end{block}
-
+    \vspace{-0.6in}
     \begin{block}{Conclusion}
-      We confirmed, via replicating the models and experiments, that the results from \cite{DBLP:journals/corr/LiTBZ15} are solid and reproducible. By doing a series of extension tasks, we further validated the design choices of \cite{DBLP:journals/corr/LiTBZ15} and the superior performance of the novel models proposed.
+      We confirmed, via replicating the models and experiments, that the results from \cite{DBLP:journals/corr/LiTBZ15} are solid and reproducible. By doing a series of extension tasks, we further validated the design choices and the superior performance of the novel models proposed.
     \end{block}
-
-
+    \vspace{-0.6in}
     \begin{block}{References}
     %   \nocite{*} % Insert publications even if they are not cited in the poster
       \linespread{0.928}
