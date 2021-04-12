@@ -149,7 +149,7 @@
     \end{equation}
     
     \textcolor{darkred}{Propagation.} At each iteration, each node representation is updated by combining messages from its neighbours and the latent representation from the last iteration, where $\mathbf{b}$ is the trainable bias vector:
-    \begin{equation}
+    \begin{equation}\label{eq:GRU}
         \forall v \in \mathcal{V}. \, \mathbf{h}_v^{(t)} = \mathrm{GRU}\left(\mathbf{h}_v^{(t-1)}, 
         \mathrm{add}(\{\mathbf{m}_{uv}^{(t)} \mid (u, v) \in \mathcal{E} \}) + \mathbf{b}\right).
     \end{equation}
@@ -264,10 +264,38 @@
   \vspace{\shrink}
     
     \begin{block}{Extensions}
+      \textcolor{darkred}{Importance of the symbolic graph structure.} 
+      
+      \textit{Experiment summary.} To test importance of the good graph representations, we removed the symbolic graph structure and replaced it with a linear graph (linked list) of sequential tokens which were used to train the RNN/LSTM baselines.
+      \vspace{0.2in}
+
+      \textit{Findings.} The performance of the GG(S)NNs trained on linked lists of tokens dropped significantly, not only below the original GG(S)NN performance but also below the RNN/LSTM baselines. 
+      \vspace{0.2in}
+
+      \textcolor{darkred}{Importance of the recurrent unit.}
+
+      \textit{Experiment summary.} To understand the significance of the temporal patterns and the gated recurrent unit, we replaced the GRU propagation model (Eq.~\eqref{eq:GRU}) with a simpler residual network structure:
+
+      \begin{equation}
+        \mathbf{h}_v^{(t)} = \mathrm{MLP}_2\left( \mathbf{h}_v^{(t-1)} + \mathrm{MLP}_1\left( \mathbf{a}_v^{(t)} \right) \right),
+      \end{equation}
+
+      where $\mathrm{MLP}$s are fully connected neural networks with one hidden layer and ReLU nonlinearity.
+      \vspace{0.2in}
+
+      \textit{Findings.} The mean performance dropped but the variance was very high—this suggests that GRU does not add expressive power, but helps with the stability of the results.
+
+      \textcolor{darkred}{Application: heap checking.}
+
+      \textit{Experiment summary.}
+      \vspace{0.2in}
+
+      \textit{Findings.}
+
     
     \end{block}
-    
-    
+
+
 
     \begin{block}{References}
     %   \nocite{*} % Insert publications even if they are not cited in the poster
