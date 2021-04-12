@@ -274,7 +274,7 @@
 
       \textcolor{darkred}{Importance of the recurrent unit.}
 
-      \textit{Experiment summary.} To understand the significance of the temporal patterns and the gated recurrent unit, we replaced the GRU propagation model (Eq.~\eqref{eq:GRU}) with a simpler residual network structure:
+      \textit{Experiment summary.} To understand the significance of the temporal patterns and the gated recurrent unit, we replaced the GRU propagation model in Eq.~\eqref{eq:GRU} with a simpler residual network structure:
 
       \begin{equation}
         \mathbf{h}_v^{(t)} = \mathrm{MLP}_2\left( \mathbf{h}_v^{(t-1)} + \mathrm{MLP}_1\left( \mathbf{a}_v^{(t)} \right) \right),
@@ -301,8 +301,7 @@
     \begin{block}{References}
     %   \nocite{*} % Insert publications even if they are not cited in the poster
       \linespread{0.928}\selectfont
-      \footnotesize{\bibliographystyle{unsrt}
-      \bibliography{oxford_poster}}
+      \footnotesize{\printbibliography}
     \end{block}
     
     

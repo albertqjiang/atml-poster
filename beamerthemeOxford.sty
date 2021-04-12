@@ -173,3 +173,38 @@
 \setbeamertemplate{bibliography entry title}{}
 \setbeamertemplate{bibliography entry location}{}
 \setbeamertemplate{bibliography entry note}{}
+
+\usepackage[backend=bibtex, style=numeric-comp, sorting=none, maxcitenames=1, maxbibnames=2, giveninits=true]{biblatex}
+\renewbibmacro{in:}{}
+
+\DeclareBibliographyDriver{std}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/editor+others/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{date}%
+  \newunit\newblock
+  \usebibmacro{finentry}}
+
+  \DeclareBibliographyAlias{article}{std}
+  \DeclareBibliographyAlias{book}{std}
+  \DeclareBibliographyAlias{booklet}{std}
+  \DeclareBibliographyAlias{collection}{std}
+  \DeclareBibliographyAlias{inbook}{std}
+  \DeclareBibliographyAlias{incollection}{std}
+  \DeclareBibliographyAlias{inproceedings}{std}
+  \DeclareBibliographyAlias{manual}{std}
+  \DeclareBibliographyAlias{misc}{std}
+  \DeclareBibliographyAlias{online}{std}
+  \DeclareBibliographyAlias{patent}{std}
+  \DeclareBibliographyAlias{periodical}{std}
+  \DeclareBibliographyAlias{proceedings}{std}
+  \DeclareBibliographyAlias{report}{std}
+  \DeclareBibliographyAlias{thesis}{std}
+  \DeclareBibliographyAlias{unpublished}{std}
+  \DeclareBibliographyAlias{*}{std}
+
+
+ \addbibresource{oxford_poster.bib}
