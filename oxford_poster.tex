@@ -92,7 +92,7 @@
     \begin{block}{Summary of the paper}
       
       \begin{itemize}
-          \item The paper presents \textcolor{darkred}{Gated Graph (Sequence) Neural Networks}, or \textcolor{darkred}{GG(S)NNs}—architectures that leverage the temporal patterns of message passing in graph-structured data to produce \textcolor{darkred}{sequence outputs}.
+          \item The paper presents \textcolor{darkred}{Gated Graph (Sequence) Neural Networks}, or \textcolor{darkred}{GG(S)NNs}—architectures that leverage the temporal patterns of message passing in graph-structured data to produce \textit{sequence outputs}.
           \item GG(S)NNs are benchmarked against baseline RNNs on a subset of reasoning tasks in the bAbI dataset and two additional graph algorithm learning tasks, and are applied to a real-world task in the program verification domain.
       \end{itemize}
 
@@ -155,11 +155,11 @@
     \end{equation}
 
     After $T$ iterations, the final latent representation for node $v$ is $\mathbf{s}_v = \mathbf{h}_v^{(T)}$.
-    \textcolor{darkred}{Output modules.} For \textcolor{darkred}{node selection} tasks, we use a scoring function $f_s$ to obtain a categorical distribution over nodes:
+    \textcolor{darkred}{Output modules.} For \textit{node selection} tasks, we use a scoring function $f_s$ to obtain a categorical distribution over nodes:
         \begin{equation}
             \mathbf{p}_{\mathrm{node}} = \mathrm{softmax}\left(f_s([\mathbf{s}_{v_1}, \mathbf{s}_{v_2}, \ldots, \mathbf{s}_{v_{\mid \mathcal{V}\mid}}]^T)\right).
         \end{equation}
-    For \textcolor{darkred}{graph classification} tasks, we first obtain a graph readout:
+    For \textit{graph classification} tasks, we first obtain a graph readout:
         \begin{equation}
             \mathbf{h}_{\mathcal{G}} =
                 \sum_{v\in\mathcal{V}}  
@@ -172,7 +172,7 @@
             \mathbf{p}_{\mathcal{G}} = \mathrm{softmax}\left(f_c\left(\mathbf{h}_{\mathcal{G}}\right)\right).
         \end{equation}
     
-    For a fixed number of recurrent unrolling steps, \textcolor{darkred}{the GGNN is entirely differentiable}, and gradients can be calculated back propagation through time, which is a boost to optimisation. This was not the case for previous GNNs relying on contraction maps.
+    For a fixed number of recurrent unrolling steps, \textit{the GGNN is entirely differentiable}, and gradients can be calculated back propagation through time, which is a boost to optimisation. This was not the case for previous GNNs relying on contraction maps.
 
     \end{block}
     
@@ -192,7 +192,7 @@
     
     
     \begin{block}{Gated Graph Sequence Neural Networks (GGSNNs)}
-     GGSNN is an extension of the GGNN architecture that is capable of returning a \textcolor{darkred}{sequence} of outputs. A schematic of the GGSNN architecture is shown in Figure \ref{fig:GGSNN}.
+     The GGSNN is an extension of the GGNN architecture that is capable of returning a \textit{sequence} of outputs. A schematic of the GGSNN architecture is shown in Figure \ref{fig:GGSNN}.
 
     \begin{figure}
         \centering
