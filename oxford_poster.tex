@@ -264,27 +264,23 @@
   \vspace{\shrink}
     
     \begin{block}{Extensions}
-      \textcolor{darkred}{Importance of the symbolic graph structure.} 
-      
-      \textit{Experiment summary.} To test importance of the good graph representations, we removed the symbolic graph structure and replaced it with a linear graph (linked list) of sequential tokens which were used to train the RNN/LSTM baselines.
+      \textcolor{darkred}{Importance of the symbolic graph structure.} To test importance of the good graph representations, we removed the symbolic graph structure and replaced it with a linear graph (linked list) of sequential tokens which were used to train the RNN/LSTM baselines.
       \vspace{0.2in}
-
-      \textit{Findings.} The performance of the GG(S)NNs trained on linked lists of tokens dropped significantly, not only below the original GG(S)NN performance but also below the RNN/LSTM baselines. 
-      \vspace{0.2in}
-
-      \textcolor{darkred}{Importance of the recurrent unit.}
-
-      \textit{Experiment summary.} To understand the significance of the temporal patterns and the gated recurrent unit, we replaced the GRU propagation model in Eq.~\eqref{eq:GRU} with a simpler residual network structure:
+    
+      \textcolor{darkred}{Importance of the recurrent unit.} To understand the significance of the temporal patterns and the gated recurrent unit, we replaced the GRU propagation model in Eq.~\eqref{eq:GRU} with a simpler residual network structure:
 
       \begin{equation}
         \mathbf{h}_v^{(t)} = \mathrm{MLP}_2\left( \mathbf{h}_v^{(t-1)} + \mathrm{MLP}_1\left( \mathbf{a}_v^{(t)} \right) \right),
       \end{equation}
 
-      where $\mathrm{MLP}$s are fully connected neural networks with one hidden layer and ReLU nonlinearity.
+      where $\mathrm{MLP}$s are fully connected neural networks with one hidden layer and ReLU nonlinearity. The results are shown in Figure~\ref{fig:extension}. 
       \vspace{0.2in}
-
-      \textit{Findings.} The mean performance dropped but the variance was very high—this suggests that GRU does not add expressive power, but helps with the stability of the results.
-      \vspace{0.2in}
+      \begin{figure}
+            \centering
+              \includegraphics[width=\textwidth]{imgs/extension_plot.pdf}
+            \caption{Results of the extension experiments. The drop in GGNN performance for linear graphs indicates poorer inductive bias, and increased variance of ResNets suggests better stability of GRUs.}
+            \label{fig:extension}
+          \end{figure}
 
       \textcolor{darkred}{Application: heap checking.}
 
@@ -296,12 +292,15 @@
     
     \end{block}
 
+    \begin{block}{Conclusion}
+      
+    \end{block}
 
 
     \begin{block}{References}
     %   \nocite{*} % Insert publications even if they are not cited in the poster
       \linespread{0.928}\selectfont
-      \footnotesize{\printbibliography}
+      \tiny{\printbibliography}
     \end{block}
     
     
